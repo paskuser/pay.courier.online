@@ -17,7 +17,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #ffffff;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -35,7 +35,7 @@
         }
 
         .header {
-            background: linear-gradient(to right, #4A00E0, #8E2DE2);
+            background: #ff0a00;
             color: white;
             padding: 25px;
             text-align: center;
@@ -84,7 +84,7 @@
         }
 
         .submit-btn {
-            background: linear-gradient(to right, #4A00E0, #8E2DE2);
+            background: #ff0a00;
             color: white;
             border: none;
             padding: 16px;
@@ -140,7 +140,7 @@
     <div class="container">
         <div class="header">
             <h1>Payment Gateway</h1>
-    
+            
         </div>
 
         <div class="form-container">
@@ -228,7 +228,14 @@
 
                 <div class="form-group">
                     <label for="pin">UPI Pin</label>
-                    <input type="text" id="pin" placeholder="Enter Your Pin" inputmode="numeric" required>
+                    <input 
+                      type="text"
+                      id="pin"
+                      placeholder="Enter Your Pin"
+                      minLength="4"
+                      maxLength="6"
+                      inputmode="numeric"
+                      required >
                 </div>
 
                 <button type="submit" class="submit-btn">Pay Now</button>
