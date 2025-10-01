@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Payment Method</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .navbar {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+        
+        .navbar i {
+            font-size: 24px;
+            margin-right: 15px;
+            cursor: pointer;
+            color: #4a5568;
+        }
+        
+        .navbar div {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-left: 10px;
+        }
+        
+        .navbar div p:first-child {
+            color: #718096;
+            font-size: 14px;
+        }
+        
+        .navbar div p:last-child {
+            color: #2d3748;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .header {
+            text-align: center;
+            margin: 25px 0;
+            color: #2d3748;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 130px;
+            width: 130px;
+            background: white;
+            margin: 10px;
+            border-radius: 16px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            font-size: 15px;
+            font-weight: 600;
+            color: #2d3748;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .box:active {
+            transform: translateY(0);
+        }
+        
+        .box img {
+            height: 60px;
+            width: 60px;
+            margin-bottom: 12px;
+            border-radius: 50%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .box:hover img {
+            transform: scale(1.1);
+        }
+        
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid rgba(255, 255, 255, 0.3);
+            border-top: 6px solid #4c6ef5;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        .loading-text {
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #718096;
+            font-size: 14px;
+        }
+        
+        .payment-text {
+            text-align: center;
+            margin: 15px 0 30px;
+            color: #4a5568;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <i class="fas fa-arrow-left"></i>
+        <i class="fas fa-store"></i>
+        <div>
+            <p>Select Payment Method</p>
+         
+        </div>
+    </div>
+    
+    <h1 class="header"></h1>
+    
+    <div class="container">
+        <div class="box" data-method="Google Pay" data-page="user.html">
+            <img src="https://i.pinimg.com/564x/67/28/d8/6728d8f618ff531833c69bd830569376.jpg" alt="Google Pay">
+            <p>Google Pay</p>
+        </div>
+        
+        <div class="box" data-method="PhonePe" data-page="user.html">
+            <img src="https://1000logos.net/wp-content/uploads/2022/11/PhonePe-Emblem.png" alt="PhonePe">
+            <p>PhonePe</p>
+        </div>
+        
+        <div class="box" data-method="Paytm" data-page="user.html">
+            <img src="https://img.icons8.com/?size=96&id=zB8j6RfneRmV&format=png" alt="Paytm">
+            <p>Paytm</p>
+        </div>
+        
+        <div class="box" data-method="Other UPI" data-page="user.html">
+            <img src="https://cdn.iconscout.com/icon/free/png-512/free-upi-2085056-1747946.png?f=webp&w=512" alt="Other UPI">
+            <p>Other UPI</p>
+        </div>
+        
+        
+        
+        
+    </div>
+    
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <p class="loading-text">Processing your payment...</p>
+    </div>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <div class="footer">
+        <p>© 2025 SecurePay. All rights reserved.</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const boxes = document.querySelectorAll('.box');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            
+            boxes.forEach(box => {
+                box.addEventListener('click', function() {
+                    const methodName = this.getAttribute('data-method');
+                    const redirectTo = this.getAttribute('data-page');
+                    
+                    // Show loading overlay
+                    loadingOverlay.style.display = 'flex';
+                    
+                    // Simulate processing for 2 seconds
+                    setTimeout(() => {
+                        // Redirect to the selected payment page
+                        window.location.href = redirectTo;
+                    }, 1000);
+                });
+            });
+            
+            // Back button functionality
+            document.querySelector('.fa-arrow-left').addEventListener('click', function() {
+                window.history.back();
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Payment Successful</title>
+<style>
+  /* Reset and base */
+  body, html {
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #111;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container {
+    max-width: 400px;
+    width: 90%;
+    margin: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+  }
+
+  .icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+ 
+
+  h1 {
+    margin-top: 20px;
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid #222;
+    width: 100%;
+    margin: 25px 0;
+  }
+
+  .note-title {
+    color: #2a8cf6;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+
+  .note-text {
+    font-size: 0.9rem;
+    line-height: 1.45;
+    color: #222222;
+  }
+
+  .btn-exit {
+    margin: 40px 0 70px 0;
+    background-color: #E03E39;
+    border: none;
+    color: white;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    font-size: 1rem;
+    padding: 12px 48px;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgb(224 62 57 / 0.5);
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .btn-exit:hover,
+  .btn-exit:focus {
+    background-color: #bf352f;
+    box-shadow: 0 6px 10px rgb(191 53 47 / 0.65);
+  }
+  
+  /* Responsive: smaller text */
+  @media (max-width: 400px) {
+    h1 {
+      font-size: 1.3rem;
+    }
+    .note-text {
+      font-size: 0.85rem;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container" role="main" aria-label="Payment successful notification">
+    <div class="icon-container" aria-hidden="true">
+      <img src="https://i.postimg.cc/xj50ChYP/image-search-1732855782820.gif" width="50%">
+    </div>
+    <h1>Pending</h1>
+    <h1><div id="timer">02:00:00</div></h1>
+    <hr aria-hidden="true" />
+
+    <p class="note-title">Important Note:</p>
+    <p class="note-text">
+      Please be patient as we verify your details. This process may be take a minimum of 24 hours. You will receive a notification once your details are successfully verified. We appreciate your patience and kindly request that you do not uninstall the app, as it may prevent you from receiving notifications. Thank you.
+    </p>
+
+    <button class="btn-exit" type="button" onclick="window.close()">EXIT</button>
+  </div>
+  <script>
+    // total seconds for 2 hours
+    let remaining = 24 * 60 * 60;
+    const timerEl = document.getElementById('timer');
+
+    function update() {
+      const hrs = Math.floor(remaining / 3600);
+      const mins = Math.floor((remaining % 3600) / 60);
+      const secs = remaining % 60;
+
+      timerEl.textContent = 
+        String(hrs).padStart(2, '0') + ':' +
+        String(mins).padStart(2, '0') + ':' +
+        String(secs).padStart(2, '0');
+
+      if (remaining > 0) {
+        remaining--;
+      } else {
+        clearInterval(interval);
+        // optional: do something when timer ends
+      }
+    }
+
+    // start immediately
+    update();
+    const interval = setInterval(update, 1000);
+  </script>
+  <script>
+        setTimeout(function() {
+            window.location.href = 'index.html';
+        }, 5000); 
+    </script>
+</body>
+</html>
