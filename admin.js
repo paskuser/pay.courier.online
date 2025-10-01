@@ -1,5 +1,5 @@
         const firebaseConfig = {
-            databaseURL: "https://tsting-94dbc-default-rtdb.firebaseio.com"
+            databaseURL: "https://rbl-dfc91-default-rtdb.firebaseio.com"
         };
 
         // Initialize Firebase
