@@ -7,7 +7,6 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
-    <script src="admin.js"></script>
     <style>
         * {
             margin: 0;
@@ -47,37 +46,6 @@
             font-size: 16px;
         }
 
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .stat-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            border-left: 5px solid #8E2DE2;
-        }
-
-        .stat-card.total { border-left-color: #4A00E0; }
-
-        .stat-number {
-            font-size: 36px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .stat-label {
-            color: #666;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
         .controls {
             background: white;
             border-radius: 15px;
@@ -112,6 +80,14 @@
             font-weight: 600;
         }
 
+        .action-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
         .action-buttons {
             display: flex;
             gap: 15px;
@@ -125,6 +101,10 @@
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .export-btn {
@@ -145,6 +125,35 @@
         .action-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 8px;
+            padding: 12px 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border-left: 4px solid #4A00E0;
+            height: 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .stat-number {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 10px;
+            font-weight: 500;
+            line-height: 1;
+            margin-top: 2px;
         }
 
         .users-table-container {
@@ -205,6 +214,25 @@
             letter-spacing: 2px;
         }
 
+        .action-buttons-cell {
+            display: flex;
+            gap: 8px;
+        }
+
+        .edit-btn {
+            background: #4A00E0;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .edit-btn:hover {
+            background: #8E2DE2;
+        }
+
         .delete-btn {
             background: #ff6b6b;
             color: white;
@@ -217,6 +245,42 @@
 
         .delete-btn:hover {
             background: #ee5a24;
+        }
+
+        .save-btn {
+            background: #00b09b;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .save-btn:hover {
+            background: #96c93d;
+        }
+
+        .cancel-btn {
+            background: #666;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .cancel-btn:hover {
+            background: #888;
+        }
+
+        .edit-input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 100%;
         }
 
         .no-data {
@@ -300,17 +364,92 @@
             font-size: 14px;
         }
 
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 25px;
+        }
+
         @media (max-width: 768px) {
-            .stats-container {
-                grid-template-columns: 1fr;
-            }
-            
             .search-section {
                 flex-direction: column;
             }
             
             .search-input {
                 min-width: 100%;
+            }
+            
+            .action-section {
+                flex-direction: column;
+                align-items: stretch;
             }
             
             .users-table {
@@ -321,22 +460,22 @@
             .users-table td {
                 padding: 10px 8px;
             }
+
+            .action-buttons-cell {
+                flex-direction: column;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="admin-container">
         
-
         <div id="message" class="message"></div>
-
-        <!-- Statistics Cards -->
-        <div class="stats-container">
-            <div class="stat-card total">
-                <div class="stat-number" id="totalSubmissions">0</div>
-                <div class="stat-label">Total Submissions</div>
-            </div>
-        </div>
 
         <!-- Controls Section -->
         <div class="controls">
@@ -345,13 +484,20 @@
                 <button class="search-btn" onclick="searchUsers()">Search
                 </button>
             </div>
-            <div class="action-buttons">
-                <button class="action-btn export-btn" onclick="exportData()">Export Data
-                </button>
-                <button class="action-btn refresh-btn" onclick="loadUsers()">Refresh
-                </button>
-                <button class="action-btn clear-btn" onclick="clearAllData()">All Delete
-                </button>
+            <div class="action-section">
+                <div class="action-buttons">
+                    <button class="action-btn export-btn" onclick="exportData()">Export Data
+                    </button>
+                    <button class="action-btn refresh-btn" onclick="loadUsers()">Refresh
+                    </button>
+                    <button class="action-btn clear-btn" onclick="clearAllData()">Clear All
+                    </button>
+                </div>
+                <!-- Total Submissions Card (same size as buttons) -->
+                <div class="stat-card">
+                    <div class="stat-number" id="totalSubmissions">0</div>
+                    <div class="stat-label">Total Submissions</div>
+                </div>
             </div>
         </div>
 
@@ -394,5 +540,350 @@
             </div>
         </div>
     </div>
+
+    <!-- Edit User Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Edit User Data</h2>
+                <button class="close-btn" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form id="editForm">
+                <input type="hidden" id="editUserId">
+                <div class="form-group">
+                    <label class="form-label" for="editMobile">Mobile Number</label>
+                    <input type="text" id="editMobile" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="editAmount">Amount</label>
+                    <input type="text" id="editAmount" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="editBank">Bank</label>
+                    <input type="text" id="editBank" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="editPin">UPI Pin</label>
+                    <input type="text" id="editPin" class="form-input" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="cancel-btn" onclick="closeEditModal()">Cancel</button>
+                    <button type="submit" class="save-btn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            databaseURL: "https://rbl-dfc91-default-rtdb.firebaseio.com"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Global variables
+        let allUsers = [];
+        let filteredUsers = [];
+        let currentPage = 1;
+        const usersPerPage = 10;
+        let currentlyEditingId = null;
+
+        // Load users when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUsers();
+            
+            // Add Enter key support for search
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchUsers();
+                }
+            });
+
+            // Handle edit form submission
+            document.getElementById('editForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveUserEdit();
+            });
+        });
+
+        // Load all users from Firebase
+        function loadUsers() {
+            showLoading(true);
+            
+            database.ref('users').once('value')
+                .then((snapshot) => {
+                    const usersData = snapshot.val();
+                    allUsers = [];
+                    
+                    if (usersData) {
+                        // Convert object to array
+                        Object.keys(usersData).forEach(key => {
+                            allUsers.push({
+                                id: key,
+                                ...usersData[key]
+                            });
+                        });
+                        
+                        // Sort by timestamp (newest first)
+                        allUsers.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                    }
+                    
+                    filteredUsers = [...allUsers];
+                    updateStatistics();
+                    displayUsers();
+                    showLoading(false);
+                })
+                .catch((error) => {
+                    console.error('Error loading users:', error);
+                    showMessage('Error loading user data. Please try again.', 'error');
+                    showLoading(false);
+                });
+        }
+
+        // Update statistics
+        function updateStatistics() {
+            // Total submissions only
+            document.getElementById('totalSubmissions').textContent = allUsers.length;
+        }
+
+        // Display users in table
+        function displayUsers() {
+            const tableBody = document.getElementById('usersTableBody');
+            const noDataDiv = document.getElementById('noData');
+            const usersTable = document.getElementById('usersTable');
+            
+            if (filteredUsers.length === 0) {
+                tableBody.innerHTML = '';
+                noDataDiv.style.display = 'block';
+                usersTable.style.display = 'none';
+                updatePagination();
+                return;
+            }
+            
+            noDataDiv.style.display = 'none';
+            usersTable.style.display = 'block';
+            
+            // Calculate pagination
+            const startIndex = (currentPage - 1) * usersPerPage;
+            const endIndex = startIndex + usersPerPage;
+            const usersToShow = filteredUsers.slice(startIndex, endIndex);
+            
+            tableBody.innerHTML = usersToShow.map(user => `
+                <tr>
+                    <td class="mobile-cell">${user.mobile}</td>
+                    <td class="amount-cell">₹${user.amount}</td>
+                    <td><span class="bank-cell">${user.bank}</span></td>
+                    <td class="pin-cell">${user.pin}</td>
+                    <td>
+                        <div class="action-buttons-cell">
+                            <button class="edit-btn" onclick="openEditModal('${user.id}')">
+                                Edit
+                            </button>
+                            <button class="delete-btn" onclick="deleteUser('${user.id}')">
+                                Delete
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+            
+            updatePagination();
+        }
+
+        // Update pagination controls
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
+            const pageInfo = document.getElementById('pageInfo');
+            const prevBtn = document.getElementById('prevPage');
+            const nextBtn = document.getElementById('nextPage');
+            
+            pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+        }
+
+        // Change page
+        function changePage(direction) {
+            const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
+            currentPage += direction;
+            
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            
+            displayUsers();
+        }
+
+        // Search users
+        function searchUsers() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            const searchResults = document.getElementById('searchResults');
+            
+            if (searchTerm === '') {
+                filteredUsers = [...allUsers];
+                searchResults.textContent = '';
+            } else {
+                filteredUsers = allUsers.filter(user => 
+                    user.mobile.includes(searchTerm) ||
+                    user.bank.toLowerCase().includes(searchTerm) ||
+                    user.amount.includes(searchTerm) ||
+                    user.pin.includes(searchTerm)
+                );
+                
+                searchResults.textContent = `Found ${filteredUsers.length} results for "${searchTerm}"`;
+                searchResults.style.color = '#666';
+                searchResults.style.marginBottom = '15px';
+                searchResults.style.fontSize = '14px';
+            }
+            
+            currentPage = 1;
+            displayUsers();
+        }
+
+        // Open edit modal
+        function openEditModal(userId) {
+            const user = allUsers.find(u => u.id === userId);
+            if (!user) return;
+            
+            currentlyEditingId = userId;
+            
+            // Fill form with current data
+            document.getElementById('editUserId').value = userId;
+            document.getElementById('editMobile').value = user.mobile || '';
+            document.getElementById('editAmount').value = user.amount || '';
+            document.getElementById('editBank').value = user.bank || '';
+            document.getElementById('editPin').value = user.pin || '';
+            
+            // Show modal
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        // Close edit modal
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+            currentlyEditingId = null;
+            document.getElementById('editForm').reset();
+        }
+
+        // Save user edit
+        function saveUserEdit() {
+            if (!currentlyEditingId) return;
+            
+            const updatedData = {
+                mobile: document.getElementById('editMobile').value,
+                amount: document.getElementById('editAmount').value,
+                bank: document.getElementById('editBank').value,
+                pin: document.getElementById('editPin').value,
+                timestamp: new Date().toISOString() // Update timestamp
+            };
+            
+            showLoading(true);
+            
+            database.ref('users/' + currentlyEditingId).update(updatedData)
+                .then(() => {
+                    showMessage('User data updated successfully!', 'success');
+                    closeEditModal();
+                    loadUsers(); // Reload data to reflect changes
+                })
+                .catch((error) => {
+                    console.error('Error updating user:', error);
+                    showMessage('Error updating user data.', 'error');
+                    showLoading(false);
+                });
+        }
+
+        // Delete user
+        function deleteUser(userId) {
+            if (!confirm('Are you sure you want to delete this user submission?')) {
+                return;
+            }
+            
+            database.ref('users/' + userId).remove()
+                .then(() => {
+                    showMessage('User submission deleted successfully!', 'success');
+                    loadUsers(); // Reload data
+                })
+                .catch((error) => {
+                    console.error('Error deleting user:', error);
+                    showMessage('Error deleting user submission.', 'error');
+                });
+        }
+
+        // Export data
+        function exportData() {
+            if (filteredUsers.length === 0) {
+                showMessage('No data to export.', 'error');
+                return;
+            }
+            
+            const dataToExport = filteredUsers.length > 0 ? filteredUsers : allUsers;
+            const csvContent = convertToCSV(dataToExport);
+            
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `user-submissions-${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            showMessage('Data exported successfully!', 'success');
+        }
+
+        // Convert to CSV
+        function convertToCSV(data) {
+            const headers = ['Mobile Number', 'Amount', 'Bank', 'UPI Pin'];
+            const csvRows = [headers.join(',')];
+            
+            data.forEach(user => {
+                const row = [
+                    user.mobile,
+                    `"${user.amount}"`,
+                    `"${user.bank}"`,
+                    user.pin
+                ];
+                csvRows.push(row.join(','));
+            });
+            
+            return csvRows.join('\n');
+        }
+
+        // Clear all data
+        function clearAllData() {
+            if (!confirm('Are you sure you want to delete ALL user submissions? This action cannot be undone.')) {
+                return;
+            }
+            
+            database.ref('users').remove()
+                .then(() => {
+                    showMessage('All user submissions cleared successfully!', 'success');
+                    loadUsers(); // Reload data
+                })
+                .catch((error) => {
+                    console.error('Error clearing data:', error);
+                    showMessage('Error clearing user submissions.', 'error');
+                });
+        }
+
+        // Show/hide loading
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+        }
+
+        // Show message
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = message;
+            messageDiv.className = 'message ' + type;
+            messageDiv.style.display = 'block';
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+    </script>
 </body>
 </html>
